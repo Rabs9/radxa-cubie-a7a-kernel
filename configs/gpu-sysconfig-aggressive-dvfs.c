@@ -306,10 +306,10 @@ PVRSRV_ERROR SysDevInit(void *pvOSDevice, PVRSRV_DEVICE_CONFIG **ppsDevConfig)
 	psDevConfig->sDVFS.sDVFSDeviceCfg.pfnSetFrequency = SetFrequency;
 	psDevConfig->sDVFS.sDVFSDeviceCfg.pfnSetVoltage = SetVoltage;
 
-	psDevConfig->sDVFS.sDVFSDeviceCfg.ui32PollMs = 50;
-	psDevConfig->sDVFS.sDVFSDeviceCfg.bIdleReq = IMG_FALSE;
-	psDevConfig->sDVFS.sDVFSGovernorCfg.ui32UpThreshold = 30;
-	psDevConfig->sDVFS.sDVFSGovernorCfg.ui32DownDifferential = 5;
+	psDevConfig->sDVFS.sDVFSDeviceCfg.ui32PollMs = 100;
+	psDevConfig->sDVFS.sDVFSDeviceCfg.bIdleReq = IMG_TRUE;
+	psDevConfig->sDVFS.sDVFSGovernorCfg.ui32UpThreshold = 70;
+	psDevConfig->sDVFS.sDVFSGovernorCfg.ui32DownDifferential = 10;
 #endif
 
 	*ppsDevConfig = psDevConfig;
