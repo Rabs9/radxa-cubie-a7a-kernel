@@ -48,8 +48,9 @@ Stress test (30s, all 8 cores): peak 50C, idle 30C, throttle point 80C.
 |--------|-------|
 | Vulkan | 1.3.277 |
 | OpenGL ES | 3.2 |
-| Max Clock | 1600 MHz (stock: 1008 MHz, +59%) |
-| glmark2-es2 | 32 (GPU accelerated via glamor) |
+| Max Clock | 1200 MHz (stock: 600 MHz, +100%) |
+| glmark2-es2 | 32 (glamor)
+OpenCL FP32 | 159-273 GFLOPS (GPU accelerated via glamor) |
 | Driver | Imagination proprietary (pvrsrvkm) |
 
 ### NPU — Vivante VIP9000
