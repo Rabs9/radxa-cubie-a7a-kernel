@@ -1,0 +1,20 @@
+# Build artifacts
+*.o
+*.ko
+*.mod
+*.mod.c
+*.order
+*.symvers
+.tmp*
+
+# Kernel source (cloned separately)
+kernel-6.6/
+allwinner-bsp*/
+allwinner-device*/
+allwinner-target/
+u-boot/
+
+# Backups
+backups/
+output/
+logs/
