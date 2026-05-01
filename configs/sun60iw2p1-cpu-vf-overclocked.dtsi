@@ -666,6 +666,114 @@
 			opp-microvolt-26m-vf0401 = <1050000>;
 			opp-microvolt-26m-vf0501 = <1000000>;
 		};
+
+		/* Overclock: A55 @ 2100MHz */
+		opp@2100000000 {
+			opp-hz = /bits/ 64 <2100000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <1150000>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1200000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1150000>;
+			opp-microvolt-26m-vf0500 = <1100000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1100000>;
+			opp-microvolt-26m-vf0501 = <1050000>;
+		};
+
+		/* Overclock: A55 @ 2200MHz */
+		opp@2200000000 {
+			opp-hz = /bits/ 64 <2200000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <1200000>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1250000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1200000>;
+			opp-microvolt-26m-vf0500 = <1150000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1150000>;
+			opp-microvolt-26m-vf0501 = <1100000>;
+		};
+
+		/* Overclock: A55 @ 2300MHz */
+		opp@2300000000 {
+			opp-hz = /bits/ 64 <2300000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <1250000>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1300000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1250000>;
+			opp-microvolt-26m-vf0500 = <1200000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1200000>;
+			opp-microvolt-26m-vf0501 = <1150000>;
+		};
+
+		/* Overclock: A55 @ 2400MHz */
+		opp@2400000000 {
+			opp-hz = /bits/ 64 <2400000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <1300000>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1350000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1300000>;
+			opp-microvolt-26m-vf0500 = <1250000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1250000>;
+			opp-microvolt-26m-vf0501 = <1200000>;
+		};
+
+		/* Overclock: A55 @ 2500MHz */
+		opp@2500000000 {
+			opp-hz = /bits/ 64 <2500000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <1350000>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1400000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1350000>;
+			opp-microvolt-26m-vf0500 = <1300000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1300000>;
+			opp-microvolt-26m-vf0501 = <1250000>;
+		};
+
+		/* Overclock: A55 @ 2600MHz */
+		opp@2600000000 {
+			opp-hz = /bits/ 64 <2600000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <1400000>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1450000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1400000>;
+			opp-microvolt-26m-vf0500 = <1350000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1350000>;
+			opp-microvolt-26m-vf0501 = <1300000>;
+		};
 	};
 
 	cluster1_opp_table: cluster1-opp-table {
@@ -1478,6 +1586,132 @@
 			opp-microvolt-26m-vf0600 = <0>;
 			opp-microvolt-26m-vf0401 = <1150000>;
 			opp-microvolt-26m-vf0501 = <1100000>;
+		};
+
+		/* Overclock: A76 @ 2400MHz */
+		opp@2400000000 {
+			opp-hz = /bits/ 64 <2400000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1250000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1250000>;
+			opp-microvolt-26m-vf0500 = <1200000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1200000>;
+			opp-microvolt-26m-vf0501 = <1150000>;
+		};
+
+		/* Overclock: A76 @ 2500MHz */
+		opp@2500000000 {
+			opp-hz = /bits/ 64 <2500000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1300000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1300000>;
+			opp-microvolt-26m-vf0500 = <1250000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1250000>;
+			opp-microvolt-26m-vf0501 = <1200000>;
+		};
+
+		/* Overclock: A76 @ 2600MHz */
+		opp@2600000000 {
+			opp-hz = /bits/ 64 <2600000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1350000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1350000>;
+			opp-microvolt-26m-vf0500 = <1300000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1300000>;
+			opp-microvolt-26m-vf0501 = <1250000>;
+		};
+
+		/* Overclock: A76 @ 2700MHz */
+		opp@2700000000 {
+			opp-hz = /bits/ 64 <2700000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1400000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1400000>;
+			opp-microvolt-26m-vf0500 = <1350000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1350000>;
+			opp-microvolt-26m-vf0501 = <1300000>;
+		};
+
+		/* Overclock: A76 @ 2800MHz */
+		opp@2800000000 {
+			opp-hz = /bits/ 64 <2800000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1450000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1450000>;
+			opp-microvolt-26m-vf0500 = <1400000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1400000>;
+			opp-microvolt-26m-vf0501 = <1350000>;
+		};
+
+		/* Overclock: A76 @ 2900MHz */
+		opp@2900000000 {
+			opp-hz = /bits/ 64 <2900000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1500000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1500000>;
+			opp-microvolt-26m-vf0500 = <1450000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1450000>;
+			opp-microvolt-26m-vf0501 = <1400000>;
+		};
+
+		/* Overclock: A76 @ 3000MHz (absolute max) */
+		opp@3000000000 {
+			opp-hz = /bits/ 64 <3000000000>;
+			clock-latency-ns = <244144>;
+			opp-microvolt-vf0000 = <0>; opp-microvolt-vf0100 = <0>; opp-microvolt-vf0200 = <0>;
+			opp-microvolt-vf0300 = <0>; opp-microvolt-vf0400 = <0>; opp-microvolt-vf0500 = <0>;
+			opp-microvolt-vf0600 = <0>; opp-microvolt-vf0401 = <0>; opp-microvolt-vf0501 = <0>;
+			opp-microvolt-26m-vf0000 = <0>;
+			opp-microvolt-26m-vf0100 = <0>;
+			opp-microvolt-26m-vf0200 = <1540000>;
+			opp-microvolt-26m-vf0300 = <0>;
+			opp-microvolt-26m-vf0400 = <1540000>;
+			opp-microvolt-26m-vf0500 = <1500000>;
+			opp-microvolt-26m-vf0600 = <0>;
+			opp-microvolt-26m-vf0401 = <1500000>;
+			opp-microvolt-26m-vf0501 = <1450000>;
 		};
 
 	};

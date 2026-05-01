@@ -13,7 +13,7 @@ Custom Linux 6.6.98 kernel build with full hardware support and overclocking for
 | **CPU A55** | 1794 MHz (no scaling) | **2000 MHz (+11.5%, schedutil)** |
 | **CPU A76** | 2002 MHz (no scaling) | **2300 MHz (+14.9%, schedutil)** |
 | **GPU** | No acceleration | **Vulkan 1.3 + GLES 3.2 (PowerVR BXM-4-64)** |
-| **NPU** | Not working | **3 TOPS, ResNet50 @ 126 FPS** |
+| **NPU** | Not working | **3 TOPS, ResNet50 @ 130 FPS** |
 | **WiFi** | Working | **Working (auto-connect on boot)** |
 | **HDMI** | Working | **Working (1080p + audio)** |
 | **Boot** | Manual | **Autonomous (20s)** |
@@ -48,7 +48,7 @@ Stress test (30s, all 8 cores): peak 50C, idle 30C, throttle point 80C.
 |--------|-------|
 | Vulkan | 1.3.277 |
 | OpenGL ES | 3.2 |
-| Max Clock | 1200 MHz (stock: 1008 MHz) |
+| Max Clock | 1600 MHz (stock: 1008 MHz, +59%) |
 | glmark2-es2 | 32 (GPU accelerated via glamor) |
 | Driver | Imagination proprietary (pvrsrvkm) |
 
@@ -58,7 +58,7 @@ Stress test (30s, all 8 cores): peak 50C, idle 30C, throttle point 80C.
 |--------|-------|
 | Frequency | 1008 MHz |
 | Performance | 3 TOPS (INT8) |
-| ResNet50 | 7.9 ms / 126 FPS |
+| ResNet50 | 7.67 ms / 130 FPS |
 | SDK | VIPLite 2.0 (ai-sdk) |
 
 ### Memory — 12GB LPDDR5
