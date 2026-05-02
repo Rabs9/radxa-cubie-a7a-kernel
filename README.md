@@ -10,8 +10,8 @@ Custom Linux 6.6.98 kernel build with full hardware support and overclocking for
 |---------|---------------|--------------|
 | **Kernel** | 5.15.147 | **6.6.98+** |
 | **OS** | Debian 11 (EOL) | **Debian 13 Trixie** |
-| **CPU A55** | 1794 MHz (no scaling) | **2000 MHz (+11.5%, schedutil)** |
-| **CPU A76** | 2002 MHz (no scaling) | **2300 MHz (+14.9%, schedutil)** |
+| **CPU A55** | 1794 MHz (no scaling) | **2800 MHz (+56%, schedutil)** |
+| **CPU A76** | 2002 MHz (no scaling) | **3000 MHz (+50%, schedutil)** |
 | **GPU** | No acceleration | **Vulkan 1.3 + GLES 3.2 (PowerVR BXM-4-64)** |
 | **NPU** | Not working | **3 TOPS, ResNet50 @ 130 FPS** |
 | **WiFi** | Working | **Working (auto-connect on boot)** |
@@ -37,10 +37,19 @@ Custom Linux 6.6.98 kernel build with full hardware support and overclocking for
 
 | Cluster | Cores | Stock | Overclocked | Voltage |
 |---------|-------|-------|-------------|---------|
-| Cortex-A55 | 6 | 1794 MHz | 2000 MHz | 1100 mV |
-| Cortex-A76 | 2 | 2002 MHz | 2300 MHz | 1200 mV |
+| Cortex-A55 | 6 | 1794 MHz | **2800 MHz (+56%)** | 1540 mV (PMIC max) |
+| Cortex-A76 | 2 | 2002 MHz | **3000 MHz (+50%)** | 1540 mV (PMIC max) |
 
-Stress test (30s, all 8 cores): peak 50C, idle 30C, throttle point 80C.
+Stress test (60s, all 8 cores): peak 53C, idle 30C, throttle point 80C.
+
+### LLM Inference (llama.cpp)
+
+| Metric | Value |
+|--------|-------|
+| Model | Qwen2.5 1.5B Q4_K_M |
+| Prompt speed | 36 tok/s |
+| Generation speed | 6 tok/s |
+| Threads | 8 (A55+A76) |
 
 ### GPU — PowerVR BXM-4-64 MC1
 
@@ -49,8 +58,8 @@ Stress test (30s, all 8 cores): peak 50C, idle 30C, throttle point 80C.
 | Vulkan | 1.3.277 |
 | OpenGL ES | 3.2 |
 | Max Clock | 1200 MHz (stock: 600 MHz, +100%) |
-| glmark2-es2 | 32 (glamor)
-OpenCL FP32 | 159-273 GFLOPS (GPU accelerated via glamor) |
+| OpenCL FP32 | 159-273 GFLOPS |
+| glmark2-es2 | 32 (GPU accelerated via glamor) |
 | Driver | Imagination proprietary (pvrsrvkm) |
 
 ### NPU — Vivante VIP9000
