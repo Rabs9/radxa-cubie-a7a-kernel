@@ -349,3 +349,17 @@ sysctl -w vm.dirty_background_ratio=5
 Kernel patches: GPL-2.0 (matching Linux kernel license)
 BSP drivers: Mixed (Allwinner GPL + Imagination MIT/GPL dual-license)
 Documentation and scripts: MIT
+
+## Quick Flash (One Command)
+
+```bash
+wget https://raw.githubusercontent.com/Rabs9/radxa-cubie-a7a-kernel/main/scripts/easy-flash.sh
+sudo bash easy-flash.sh /dev/sdX
+```
+
+Downloads everything automatically and flashes. No manual steps.
+
+## Single Image File (for Etcher/RPi Imager)
+
+A single `.img.xz` file (2.6GB) is available for use with graphical imagers like Balena Etcher.
+Contact the maintainer or check releases for download links.
