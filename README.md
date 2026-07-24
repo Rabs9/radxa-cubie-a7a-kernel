@@ -2,8 +2,6 @@
 
 Custom Linux 6.6.98 kernel build with full hardware support and overclocking for the Radxa Cubie A7A (Allwinner A733 SoC).
 
-**The vendor abandoned this board** — shipping only Debian 11 with a dead-end Linux 5.15 kernel, no GPU acceleration, broken cpufreq, and incomplete hardware support. This project fixes all of that.
-
 ## What This Gives You
 
 | Feature | Radxa Official | This Project |
