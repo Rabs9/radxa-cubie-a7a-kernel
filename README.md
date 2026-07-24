@@ -6,17 +6,17 @@ Custom Linux 6.6.98 kernel build with full hardware support and overclocking for
 
 ## What This Gives You
 
-| Feature | Stock (Radxa) | This Project |
+| Feature | Radxa Official | This Project |
 |---------|---------------|--------------|
-| **Kernel** | 5.15.147 | **6.6.98+** |
-| **OS** | Debian 11 (EOL) | **Debian 13 Trixie** |
-| **CPU A55** | 1794 MHz (no scaling) | **2800 MHz (+56%, schedutil)** |
-| **CPU A76** | 2002 MHz (no scaling) | **3000 MHz (+50%, schedutil)** |
-| **GPU** | No acceleration | **Vulkan 1.3 + GLES 3.2 (PowerVR BXM-4-64)** |
-| **NPU** | Not working | **3 TOPS, ResNet50 @ 130 FPS** |
-| **WiFi** | Working | **Working (auto-connect on boot)** |
-| **HDMI** | Working | **Working (1080p + audio)** |
-| **Boot** | Manual | **Autonomous (20s)** |
+| **Kernel** | **5.15.147 / 6.6.98+** | **6.6.98+** |
+| **OS** | **Debian 11 / Debian 13 (A7A/A7Z/A7S)** | **Debian 13 Trixie** |
+| **CPU A55** | 1794 MHz | **2800 MHz (+56%, schedutil)** |
+| **CPU A76** | 2002 MHz | **3000 MHz (+50%, schedutil)** |
+| **GPU** | **Vulkan 1.3 + GLES 3.2 (PowerVR BXM-4-64)** | **Vulkan 1.3 + GLES 3.2 (PowerVR BXM-4-64)** |
+| **NPU** | **3 TOPS** [official tutorials and examples](https://docs.radxa.com/en/cubie/a7a/app-dev/npu-dev)  | **3 TOPS, ResNet50 @ 130 FPS** |
+| **WiFi** | **Working (auto-connect on boot)** | **Working (auto-connect on boot)** |
+| **HDMI** | **Working (video + audio)** | **Working (1080p + audio)** |
+| **Boot** | **Autonomous (new boot flow, no `boot0`)** | **Autonomous (20s)** |
 
 ## Hardware Specs
 
