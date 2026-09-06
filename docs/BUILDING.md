@@ -59,6 +59,63 @@ export KBUILD_BUILD_HOST=whatever
 
 ---
 
+## Installing the device trees
+
+**Do this before building, or you will get a stock kernel.** The tuning in this
+repository lives in `configs/` as device-tree sources, and nothing installs them
+automatically. A build without this step compiles and boots — it simply has none
+of the overclocking, and ethernet stays broken.
+
+The three files map onto stock names in the kernel's device-tree directory:
+
+```bash
+DTS=kernel-6.6/arch/arm64/boot/dts/allwinner
+
+cp configs/sun60iw2p1-gpu-overclocked.dtsi    "$DTS/sun60iw2p1.dtsi"
+cp configs/sun60iw2p1-cpu-vf-overclocked.dtsi "$DTS/sun60iw2p1-cpu-vf.dtsi"
+cp configs/board-overclocked.dts              "$DTS/sun60i-a733-cubie-a7a.dts"
+
+cp configs/cubie_a7a_defconfig arch/arm64/configs/cubie_a7a_defconfig
+```
+
+They are published under `-overclocked` names so it is obvious which is which in
+`configs/`; the build expects the stock names, hence the rename on copy.
+
+**What each one carries:**
+
+| file | contents |
+|---|---|
+| `sun60iw2p1-gpu-overclocked.dtsi` | GPU, DSU/L3 and memory operating points, and the `dcdc4` rail floors |
+| `sun60iw2p1-cpu-vf-overclocked.dtsi` | the CPU voltage/frequency table, extended to 3000 MHz |
+| `board-overclocked.dts` | the board tree — regulators, and the corrected RGMII `tx-delay` |
+
+**Checking it worked.** Compile the board tree and read the result back:
+
+```bash
+dtc -I dtb -O dts $DTS/../../../../arch/arm64/boot/dts/allwinner/sun60i-a733-cubie-a7a.dtb \
+  | grep -E 'tx-delay|opp-hz' | tail
+```
+
+A correct build shows `tx-delay = <0x09>` and operating points running to
+0xb2d05e00 (3000 MHz). If `tx-delay` reads `0x0c` (12) the board tree was not
+installed, and the board's network will hang SSH and stall apt.
+
+---
+
+## How the published packages are built
+
+Worth knowing, because it differs from the above. `packaging/build-a7a-kernel-debs.sh`
+does **not** compile device trees. It takes the DTBs from a running, validated
+A7A, patches the `tx-delay` byte in the compiled binary, and packages those — so
+what people install is exactly what was tested on hardware.
+
+That means the published `.deb`s and the from-source build are two separate
+paths to the same result. If you are reproducing the kernel yourself, follow the
+source route above; the packaging script is for turning an already-validated
+board into installable packages.
+
+---
+
 ## Deploying a hand-built kernel
 
 ```bash
