@@ -43,7 +43,7 @@ PYEOF
 SYSMAP=${SYSMAP:-/home/radxa/debbuild/src/System.map-6.6.98+}
 B=${B:-/home/radxa/debbuild}
 OUT=$B/out
-TXDELAY=${TXDELAY:-9}        # RGMII tx-delay: DTB ships 12, outside this board's working 8-10 window
+TXDELAY=${TXDELAY:-9}        # RGMII tx-delay: DTB ships 12, outside this board's working 9-11 window
 
 msg(){ echo "==> $*"; }
 
@@ -221,13 +221,16 @@ Description: Device trees for the Radxa Cubie A7A $KREL kernel
  gpu600 (stock), gpu800, gpu1008 (default), gpu1200, custom and cpu32.
  .
  The RGMII tx-delay of the gigabit MAC is set to $TXDELAY. The vendor value of
- 12 leaves the transmit timing marginal and outside this board's working window
- (8-10), so transmitted frames are corrupted data-dependently: the failure rate
- climbs with the number of bits on the wire and with payload entropy. The link
- still negotiates 1000/full and reports no errors, and receive is unaffected,
- which makes the fault easy to misread as a bad cable. Measured with random
- payloads at tx-delay 12: 12% loss at 64 bytes, 72% at 300, 100% at 1200 and
- above. Real traffic is high-entropy, so SSH, apt and bulk transfers fail.
+ 12 sits outside the window this board carries real traffic in (9-11), so
+ transmitted frames are corrupted data-dependently: the failure rate climbs
+ with frame size and with payload entropy. The link still negotiates 1000/full
+ and reports no errors, and receive is unaffected, which makes the fault easy
+ to misread as a bad cable. A sweep of all 32 delay values with random payloads
+ puts loss at tx-delay 12 at 4% for 64-byte frames, 24% at 700 and 42% at 1200,
+ while the same frames filled with one repeated byte pass with zero loss - which
+ is why a simple generated payload tests clean on a broken link. Real traffic is
+ high-entropy, so SSH, apt and bulk transfers fail. Full data in
+ docs/ETHERNET-TX-DELAY.md.
 DCTLEOF
 
 ############################ 3. linux-headers ############################

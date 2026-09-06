@@ -2,8 +2,8 @@ From: Rabs9
 Subject: [PATCH] board dts: correct the RGMII transmit delay for gigabit ethernet
 
 The shipped device tree sets tx-delay = <12>, which is outside the window this
-board's PHY accepts (8-10). Transmitted frames larger than roughly 250 bytes are
-corrupted on the way out.
+board carries real traffic in (9-11). Transmitted frames are corrupted, and the
+loss climbs with frame size.
 
 It does not present as a network fault. The link negotiates 1000/full, ethtool
 reports zero tx_errors, pings reply normally and receive is unaffected - so it
@@ -38,9 +38,9 @@ index 60dd64f..02e19db 100644
  	/delete-property/ aw,rgmii-clk-ext;
 -	tx-delay = <12>;
 +	/* RGMII tx-delay: the vendor value of 12 is outside this board's working
-+	 * window (8-10). At 12 the link negotiates 1000/full and small frames
-+	 * pass, but frames over ~250 bytes are dropped, which breaks SSH, apt
-+	 * and every bulk transfer. 9 is the centre of the passing window.
++	 * window (9-11). At 12 the link negotiates 1000/full and small frames
++	 * pass, but larger frames are corrupted, which breaks SSH, apt and
++	 * every bulk transfer. 9 is the only value with zero loss at any size.
 +	 * Runtime override: echo N > /sys/class/net/end0/device/tx_delay
 +	 */
 +	tx-delay = <9>;

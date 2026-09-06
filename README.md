@@ -105,8 +105,9 @@ Prefer to keep your existing install? The same system is available as packages
 ## Gigabit ethernet — the fix that matters most
 
 Every image built before 2026-08-22, **including Radxa's own**, sets the RGMII
-transmit delay to the vendor value of `12`. That is outside the window the PHY
-accepts, so transmitted frames above roughly 250 bytes get corrupted.
+transmit delay to the vendor value of `12`. Real traffic only survives at `9`,
+`10` or `11`, so transmitted frames get corrupted — and the loss climbs with
+frame size, reaching 42% at 1200 bytes.
 
 It does not look like a network fault. The link reports 1000/full with zero
 `tx_errors`, short pings reply normally, and receive is perfect — but SSH hangs
@@ -114,8 +115,9 @@ straight after key exchange and `apt` stalls. It reads like a bad cable, and it
 is not: it reproduces across cables.
 
 The corruption is **data-dependent**, which is why it went unnoticed for so
-long — a test payload of constant bytes passes while real traffic fails. Test
-with random data or you will "prove" a broken board healthy.
+long. At the vendor's setting, a payload of one repeated byte passes with
+**zero loss at every frame size** while random data loses up to 42%. Test with
+random data or you will "prove" a broken board healthy.
 
 Fixed in these images. On any other image:
 
@@ -124,7 +126,10 @@ echo 9 | sudo tee /sys/class/net/end0/device/tx_delay     # now, no reboot
 ```
 
 Permanently: install `linux-dtb-6.6.98-a7a` from the packages release.
-Measurements and a reproducer are in [`packaging/README.md`](packaging/README.md).
+
+**[Every one of the 32 delay values, measured →](docs/ETHERNET-TX-DELAY.md)** —
+the full sweep, both payload types, with and without the vendor PHY driver, and
+the raw data. A reproducer is also in [`packaging/README.md`](packaging/README.md).
 
 ---
 

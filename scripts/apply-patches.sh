@@ -62,7 +62,7 @@ echo "All patches applied successfully."
 echo "Next: Set up kernel tree with ./scripts/setup-kernel.sh"
 
 # --- [8/8] gigabit ethernet ------------------------------------------------
-# The board dts ships tx-delay = <12>, outside this PHY's working window (8-10).
+# The board dts ships tx-delay = <12>, outside this PHY's working window (9-11).
 # Frames over ~250 bytes are corrupted, so SSH hangs after key exchange and apt
 # stalls - while the link still reports 1000/full with zero tx_errors, which is
 # why it looks like a cabling fault. Without this the board has no usable
