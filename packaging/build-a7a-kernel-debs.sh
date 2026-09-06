@@ -236,6 +236,14 @@ P=$B/pkg/linux-headers-$ABI
 SRCDIR=/usr/src/linux-headers-$ABI
 mkdir -p "$P/DEBIAN" "$P$SRCDIR" "$P/lib/modules/$KREL"
 KTREE=${KTREE:-/home/radxa/kernel-6.6}
+# The headers package is the one part that needs the full kernel source tree.
+# That tree is ~3GB and normally lives on the build host, not the board, so
+# allow it to be skipped here and packaged separately rather than failing the
+# whole run after linux-image and linux-dtb have already been staged.
+if [ "${SKIP_HEADERS:-0}" = 1 ] || [ ! -d "$KTREE" ]; then
+    msg "linux-headers-$ABI SKIPPED (no kernel tree at $KTREE)"
+    rm -rf "$P"
+else
 cd "$KTREE"
 # NOTE: BSP_TOP=bsp/ is mandatory (bsp/Kconfig sources $(BSP_TOP)platform/Kconfig), and the
 # run-command string is expanded by make first, so pass an absolute path, not $srctree.
@@ -243,8 +251,85 @@ make -s BSP_TOP=bsp/ ARCH=arm64 run-command      KBUILD_RUN_COMMAND="$KTREE/scri
 # install-extmod-build carries bsp/include but not the BSP Kconfig/Makefile skeleton,
 # which out-of-tree builds need when they recurse with BSP_TOP=bsp/
 ( cd "$KTREE" && find bsp \( -name 'Kconfig*' -o -name 'Makefile*' -o -name '*.mk' \) -type f -print0 )   | while IFS= read -r -d '' f; do install -D -m 0644 "$KTREE/$f" "$P$SRCDIR/$f"; done
+# install-extmod-build also omits tools/include, which modpost's file2alias.c
+# needs. Without it the board cannot rebuild modpost, and the shipped modpost is
+# the build host's x86-64 binary. ~330 KB.
+( cd "$KTREE" && find tools/include -type f -print0 )   | while IFS= read -r -d '' f; do install -D -m 0644 "$KTREE/$f" "$P$SRCDIR/$f"; done
 cd "$B"
 ln -sfn "$SRCDIR" "$P/lib/modules/$KREL/build"
+fi
+
+if [ -d "$B/pkg/linux-headers-$ABI" ]; then
+
+cat > "$P/DEBIAN/postinst" <<'HPIEOF'
+#!/bin/sh
+# The kernel was cross-compiled, so scripts/basic/fixdep, scripts/mod/modpost
+# and scripts/kallsyms in this tree are the BUILD HOST's binaries - x86-64 in an
+# arm64 package. Every out-of-tree or DKMS build then fails with
+# "Exec format error". Rebuild them for this machine.
+#
+# Never fail the install over this: on a minimal image without a compiler the
+# headers are still worth having, and the message says what to do.
+set -e
+[ "$1" = configure ] || exit 0
+
+KDIR=/usr/src/linux-headers-@ABI@
+cd "$KDIR" || exit 0
+
+# ELF header, byte 18, is the machine field: 0xb7 aarch64, 0x3e x86-64.
+# Anything that is not aarch64 cannot run here and has to be rebuilt.
+arch_of() { od -An -tx1 -j18 -N1 "$1" 2>/dev/null | tr -d ' \n'; }
+
+needs_build=0
+for t in scripts/basic/fixdep scripts/mod/modpost; do
+    [ -f "$t" ] || continue
+    [ "$(arch_of "$t")" = b7 ] || needs_build=1
+done
+[ "$needs_build" = 0 ] && exit 0
+
+if ! command -v gcc >/dev/null 2>&1; then
+    echo "linux-headers-@ABI@: the shipped build tools are for the build host's"
+    echo "  architecture and could not be rebuilt - gcc is not installed."
+    echo "  Run: apt install build-essential   then: dpkg-reconfigure linux-headers-@ABI@"
+    exit 0
+fi
+
+echo "linux-headers-@ABI@: rebuilding kbuild host tools for $(uname -m)"
+
+gcc -o scripts/basic/fixdep scripts/basic/fixdep.c 2>/dev/null || true
+
+cat > scripts/mod/elfconfig.h <<'ELFEOF'
+#define KERNEL_ELFCLASS ELFCLASS64
+#define KERNEL_ELFDATA ELFDATA2LSB
+#define HOST_ELFCLASS ELFCLASS64
+#define HOST_ELFDATA ELFDATA2LSB
+ELFEOF
+
+# tools/include goes to file2alias.c ONLY - that is what scripts/mod/Makefile
+# does. Giving it to the others redefines struct list_head.
+O=$(mktemp -d)
+gcc -c -o "$O/file2alias.o" scripts/mod/file2alias.c -I scripts/mod -I tools/include 2>/dev/null
+for c in modpost sumversion symsearch; do
+    gcc -c -o "$O/$c.o" "scripts/mod/$c.c" -I scripts/mod 2>/dev/null
+done
+if [ -f "$O/modpost.o" ]; then
+    gcc -o scripts/mod/modpost "$O"/*.o 2>/dev/null || true
+fi
+rm -rf "$O"
+
+# module.lds ships only as .S; the final link needs the preprocessed form.
+[ -f scripts/module.lds ] || gcc -E -P -x c -o scripts/module.lds scripts/module.lds.S \
+    -I include -I arch/arm64/include -I arch/arm64/include/generated \
+    -include include/linux/kconfig.h -D__KERNEL__ 2>/dev/null || true
+
+for t in scripts/basic/fixdep scripts/mod/modpost; do
+    if [ "$(arch_of "$t")" = b7 ]; then echo "  $t: ok"
+    else echo "  $t: STILL WRONG ARCH"; fi
+done
+exit 0
+HPIEOF
+sed -i "s/@ABI@/$ABI/g" "$P/DEBIAN/postinst"
+chmod 0755 "$P/DEBIAN/postinst"
 
 HSIZE=$(du -sk "$P" | cut -f1)
 cat > "$P/DEBIAN/control" <<HCTLEOF
@@ -267,11 +352,18 @@ Description: Header files for the Radxa Cubie A7A $KREL kernel
  The compiler toolchain is Recommends rather than Depends, so the headers can be
  installed on a minimal image; install build-essential when you actually build.
  .
+ This kernel is cross-compiled, so kbuild's host tools (fixdep, modpost) are
+ built for the build host. The postinst rebuilds them for this machine on
+ install; without that step every out-of-tree build fails with "Exec format
+ error". If gcc was absent at install time, install build-essential and run
+ dpkg-reconfigure on this package.
+ .
  The Allwinner BSP is part of this tree. Out-of-tree builds that reach BSP
  Kconfig must pass BSP_TOP=bsp/ on the make command line. Module.symvers is not
  shipped, so pass KBUILD_MODPOST_WARN=1; CONFIG_MODVERSIONS is off in this
  kernel, so module loading is unaffected.
 HCTLEOF
+fi
 
 ############################ 4. board config ############################
 msg "a7a-board-config"
