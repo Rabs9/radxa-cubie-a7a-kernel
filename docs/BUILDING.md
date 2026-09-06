@@ -33,6 +33,10 @@ git clone --branch allwinner-aiot-linux-6.6 --depth 1 https://github.com/radxa/k
 git clone --branch cubie-aiot-v1.4.8 --depth 1 https://github.com/radxa/allwinner-bsp.git allwinner-bsp-1.4.8
 git clone --branch device-a733-v1.4.8 --depth 1 https://github.com/radxa/allwinner-device.git allwinner-device-1.4.8
 
+# needed for the wifi firmware later - the build works without it, but the
+# firmware step further down expects this tree to be present
+git clone --branch target-a733-v1.4.6 --depth 1 https://github.com/radxa/allwinner-target.git allwinner-target
+
 ./scripts/apply-patches.sh
 
 cd kernel-6.6
@@ -118,14 +122,44 @@ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- BSP_TOP=bsp/ \
   M=../allwinner-bsp-1.4.6/drivers/net/wireless/aic8800/usb -j$(nproc)
 ```
 
-Firmware is in
-`allwinner-target/debian/cubie_a7a/overlay/lib/firmware/aic8800D80/`.
+That produces two modules — `aic_load_fw.ko` and `aic8800_fdrv.ko`. Both are
+needed: `aic_load_fw` pushes the firmware blob to the chip, `aic8800_fdrv` is the
+driver proper.
+
+**The firmware blobs are a separate download.** They live in the
+`allwinner-target` tree cloned above, not in the BSP:
+
+```bash
+sudo mkdir -p /lib/firmware/aic8800D80
+sudo cp allwinner-target/debian/cubie_a7a/overlay/lib/firmware/aic8800D80/* \
+        /lib/firmware/aic8800D80/
+sudo depmod -a
+```
+
+The modules load on demand once the firmware is in place — `aic_load_fw` first,
+then `aic8800_fdrv`. If you get a device that enumerates but never associates,
+missing firmware is the usual cause.
 
 ### Regulatory database
 
 The kernel embeds `regulatory.db` via `CONFIG_EXTRA_FIRMWARE` so 5 GHz works
 without depending on a userspace `wireless-regdb` package being installed and
-ordered correctly at boot. To check a built kernel actually contains it, look
+ordered correctly at boot.
+
+**Where to get the file.** It comes from Debian's `wireless-regdb` package, which
+ships several variants:
+
+```bash
+apt download wireless-regdb
+dpkg -x wireless-regdb_*.deb wireless-regdb/
+
+# use the -debian variants; the -upstream ones are unsigned by Debian's key
+sudo cp wireless-regdb/lib/firmware/regulatory.db-debian     /lib/firmware/regulatory.db
+sudo cp wireless-regdb/lib/firmware/regulatory.db.p7s-debian /lib/firmware/regulatory.db.p7s
+```
+
+`CONFIG_EXTRA_FIRMWARE` then bakes them into the image at build time, so put them
+in place **before** building. To check a built kernel actually contains it, look
 for the `RGDB` magic bytes:
 
 ```bash
@@ -200,6 +234,15 @@ CONFIG_CPUFREQ_DT=y              # but blocklist CPUFREQ_DT_PLATDEV, below
 { .compatible = "allwinner,sun60i-a733", },
 { .compatible = "arm,sun60iw2p1", },
 ```
+
+---
+
+## A note on `scripts/build.sh`
+
+That script predates this documentation and **targets the 5.15 BSP kernel**, not
+6.6.98. It is kept for reference only — following the steps above is the current
+route. If you ran it expecting a 6.6.98 build, that is why the result looked
+wrong.
 
 ---
 
