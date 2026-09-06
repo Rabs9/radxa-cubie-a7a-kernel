@@ -16,6 +16,27 @@ it was measured — the date it was measured is stated.
 
 ---
 
+## Download
+
+**[Latest images →](https://github.com/Rabs9/radxa-cubie-a7a-kernel/releases/latest)**
+
+| image | who it's for | download |
+|---|---|---|
+| **`a7a-standard`** | Start here. A76 3.0 GHz, A55 2.8 GHz, RAM 2040 MHz | [`.img.xz` · 1.9 GB](https://github.com/Rabs9/radxa-cubie-a7a-kernel/releases/download/images-20260825/a7a-standard-20260825.img.xz) |
+| **`a7a-maximum`** | More speed, less margin. Adds RAM 2136 MHz and DSU/L3 1352 MHz | [`.img.xz` · 1.9 GB](https://github.com/Rabs9/radxa-cubie-a7a-kernel/releases/download/images-20260825/a7a-maximum-20260825.img.xz) |
+
+Checksums and signatures are in the same release — `SHA256SUMS`, `SHA256SUMS.asc`
+and `Rabs9-public-key.asc`.
+
+Already running Debian 13 and only want the kernel? The `.deb`s are in
+[packages only](https://github.com/Rabs9/radxa-cubie-a7a-kernel/releases/tag/debs-20260825), and the newest headers package is in
+[6.6.98-6](https://github.com/Rabs9/radxa-cubie-a7a-kernel/releases/tag/debs-20260906).
+
+> **These images are overclocked out of the box and need a heatsink and fan.**
+> See [Before you flash](#before-you-flash-you-need-active-cooling) directly below.
+
+---
+
 ## Before you flash: you need active cooling
 
 These images run the board **overclocked out of the box**. A 60-second all-core
