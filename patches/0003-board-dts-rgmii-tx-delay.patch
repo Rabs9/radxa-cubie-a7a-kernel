@@ -1,0 +1,49 @@
+From: Rabs9
+Subject: [PATCH] board dts: correct the RGMII transmit delay for gigabit ethernet
+
+The shipped device tree sets tx-delay = <12>, which is outside the window this
+board's PHY accepts (8-10). Transmitted frames larger than roughly 250 bytes are
+corrupted on the way out.
+
+It does not present as a network fault. The link negotiates 1000/full, ethtool
+reports zero tx_errors, pings reply normally and receive is unaffected - so it
+reads as a bad cable, and it survives changing the cable. What actually happens
+is that SSH hangs immediately after key exchange and apt stalls partway through
+a download.
+
+The corruption is data-dependent, which is why it went unnoticed: a test payload
+of one repeated byte passes perfectly, because the low transition density is
+within what the PHY tolerates. Real traffic is high-entropy and fails. Any test
+must use random data.
+
+Measured loss at tx-delay 12 with random payloads:
+
+     64 bytes    12%
+    300 bytes    72%
+   1200 bytes   100%
+
+At 9, sustained 1000 Mb/s full duplex with no errors. 9 is the centre of the
+passing window rather than its edge.
+
+Applies to: allwinner-device (device-a733-v1.4.8), configs/cubie_a7a/linux-6.6/board.dts
+Runtime override without rebuilding: echo 9 > /sys/class/net/end0/device/tx_delay
+---
+diff --git a/configs/cubie_a7a/linux-6.6/board.dts b/configs/cubie_a7a/linux-6.6/board.dts
+index 60dd64f..02e19db 100644
+--- a/configs/cubie_a7a/linux-6.6/board.dts
++++ b/configs/cubie_a7a/linux-6.6/board.dts
+@@ -2140,7 +2140,13 @@
+ 	pinctrl-names = "default", "sleep";
+ 	aw,soc-phy-clk-en;
+ 	/delete-property/ aw,rgmii-clk-ext;
+-	tx-delay = <12>;
++	/* RGMII tx-delay: the vendor value of 12 is outside this board's working
++	 * window (8-10). At 12 the link negotiates 1000/full and small frames
++	 * pass, but frames over ~250 bytes are dropped, which breaks SSH, apt
++	 * and every bulk transfer. 9 is the centre of the passing window.
++	 * Runtime override: echo N > /sys/class/net/end0/device/tx_delay
++	 */
++	tx-delay = <9>;
+ 	rx-delay = <10>;
+ 	dwmac3v3-supply = <&reg_dc1sw2>;
+ 	phy3v3-supply = <&reg_dc1sw1>;

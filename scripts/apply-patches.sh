@@ -5,6 +5,8 @@ set -euo pipefail
 
 BSP="${1:-allwinner-bsp-1.4.8}"
 KERNEL="${2:-kernel-6.6}"
+# the board device tree lives in the DEVICE tree, not the BSP
+DEVICE="${3:-allwinner-device-1.4.8}"
 
 echo "Applying BSP patches to $BSP..."
 
@@ -58,3 +60,27 @@ fi
 echo ""
 echo "All patches applied successfully."
 echo "Next: Set up kernel tree with ./scripts/setup-kernel.sh"
+
+# --- [8/8] gigabit ethernet ------------------------------------------------
+# The board dts ships tx-delay = <12>, outside this PHY's working window (8-10).
+# Frames over ~250 bytes are corrupted, so SSH hangs after key exchange and apt
+# stalls - while the link still reports 1000/full with zero tx_errors, which is
+# why it looks like a cabling fault. Without this the board has no usable
+# network, so it is applied as part of the standard patch run rather than left
+# as a documentation step someone might miss.
+BOARD_DTS="$DEVICE/configs/cubie_a7a/linux-6.6/board.dts"
+if [ -f "$BOARD_DTS" ]; then
+    if grep -q 'tx-delay = <9>' "$BOARD_DTS"; then
+        echo "[8/8] RGMII tx-delay already corrected"
+    elif patch -p1 -d "$DEVICE" --forward --silent \
+              < "$(dirname "$0")/../patches/0003-board-dts-rgmii-tx-delay.patch" 2>/dev/null; then
+        echo "[8/8] Corrected RGMII tx-delay 12 -> 9 (gigabit ethernet fix)"
+    else
+        # the patch context can drift between BSP revisions; fall back to the
+        # substitution, and say so rather than failing silently
+        sed -i 's/tx-delay = <12>;/tx-delay = <9>;/' "$BOARD_DTS" \
+            && echo "[8/8] Corrected RGMII tx-delay via sed (patch context did not match)"
+    fi
+else
+    echo "[8/8] SKIPPED: $BOARD_DTS not found - clone allwinner-device and pass it as \$3"
+fi
